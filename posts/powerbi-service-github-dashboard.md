@@ -117,7 +117,7 @@ Export the table as a CSV, from the previous paginated report. Or export it from
 Open the CSV file in `MySQL`
 
 * This is my preferred method. It just takes a few more steps to create a table.
-* Follow my [Setup MySQL with VScode](../../../../docs/setup-mysql-vscode.md)
+* Follow my [Setup MySQL with VScode](https://github.com/tomordonez/learning/blob/main/docs/setup-mysql-vscode.md)
 
 I have a database called `downloaded_csv` where I load CSV files as tables. Create the database in the SQL editor, then right-click `Run query`, and refresh `localhost`:
 
@@ -145,8 +145,8 @@ This results in the same data as the paginated report but in descending order by
     2656	Monday
     2583	Thursday
     1951	Friday
-    565	    Sunday
-    308	    Saturday
+    565	  Sunday
+    308	  Saturday
 
 ## Explore the report
 
@@ -158,9 +158,11 @@ What report can be modified to answer any of these questions?
 Go to PBI Service. To the app `Github/Reports/Github`.
 
 **Q1: Who are the top 50 users by group**
+
 In the `Top 100 Contributors` there is a visual that shows users ranked by commits. Looking at the dataset where this comes from, the `Users` table doesn't identify what users are MS employees or external contributors. 
 
 **Q2: What are the common commit subjects?**
+
 In `Contributor Commits` there is a visual with commits and usernames. However, looking at the `Commits` table, it doesn't have a commit subject.
 
 The page `Pull Requests` has a `Label` visual with data similar to topics. The table `Pull Requests` has a `title` column but there isn't a visual to represent this data.

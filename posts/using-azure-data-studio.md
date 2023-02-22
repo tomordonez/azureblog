@@ -3,13 +3,12 @@ title: 'Using Azure Data Studio'
 date: '2023-02-21'
 ---
 
-Download docs [here](https://learn.microsoft.com/en-us/sql/azure-data-studio/download-azure-data-studio)
+Source:
 
-What is Azure Data Studio docs [here](https://learn.microsoft.com/en-us/sql/azure-data-studio/what-is-azure-data-studio)
-
-Quickstart docs [here](https://learn.microsoft.com/en-us/sql/azure-data-studio/quickstart-sql-server)
-
-Writing T-SQL docs [here](https://learn.microsoft.com/en-us/sql/t-sql/tutorial-writing-transact-sql-statements)
+* Download Azure Data Studio [here](https://learn.microsoft.com/en-us/sql/azure-data-studio/download-azure-data-studio)
+* What is Azure Data Studio? [here](https://learn.microsoft.com/en-us/sql/azure-data-studio/what-is-azure-data-studio)
+* Quickstart docs [here](https://learn.microsoft.com/en-us/sql/azure-data-studio/quickstart-sql-server)
+* Writing T-SQL docs [here](https://learn.microsoft.com/en-us/sql/t-sql/tutorial-writing-transact-sql-statements)
 
 ## Install Azure Data Studio in Ubuntu
 
@@ -94,7 +93,7 @@ Instead of using the default `dbo` schema, create your own. For example my schem
     
 ## Create a table in Azure Data Studio
 
-For example create the tables Product and ProductSubcategory
+For example create the tables `Product` and `ProductSubcategory`
 
     CREATE TABLE PL300.Product
         (ProductID int PRIMARY KEY IDENTITY(1,1),

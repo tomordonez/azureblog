@@ -94,7 +94,7 @@ Go to the SQL Server:
 
 **PowerBI is on an Azure VM**
 
-As seen in my [Setup Power BI in an Azure VM](setup-powerbi-in-azure-vm.md). You need give SQL Server access to the Azure VM
+As seen in my [Setup Power BI in an Azure VM](setup-powerbi-in-azure-vm). You need to give SQL Server access to the Azure VM
 
 * Below Firewall rules
 * Under `Exceptions`
@@ -112,7 +112,7 @@ Go to PowerBI, get data, select Azure, then Azure SQL Database.
   
 Sign in:
 
-* Select `Microsoft Account` and signin to your AD account
+* Select `Microsoft Account` and sign in to your AD account
 
 Power Query/Navigator opens:
 
