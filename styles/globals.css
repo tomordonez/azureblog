@@ -27,18 +27,23 @@ img {
 }
 
 h1,
-h2,
-p,
-ul {
+h2 {
   margin: 0;
-}
-
-ul {
-  padding: 0;
-  list-style: none;
 }
 
 button {
   padding: 0.5rem 1rem;
   font-weight: bold;
+}
+
+code {
+  padding: 1px 5px;
+}
+
+pre,
+code {
+  font-size: 15px;
+  border: 1px solid #e8e8e8;
+  border-radius: 3px;
+  background-color: #eef;
 }
