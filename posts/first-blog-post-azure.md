@@ -1,6 +1,6 @@
 ---
 title: 'First Blog Post in Azure'
-date: '2023-02-22'
+date: '2023-02-16'
 ---
 
 I have been working with Azure for the last few weeks:
