@@ -11,16 +11,19 @@ export default function App({ Component, pageProps }) {
                     console.log('GA script has loaded')
                 }}
             />
-            <Script id="google-analytics" strategy="afterInteractive">
-                {`
+            <Script
+                id="google-analytics"
+                strategy="afterInteractive"
+                dangerouslySetInnerHTML={{
+                    __html: `
                     window.dataLayer = window.dataLayer || [];
                     function gtag() {
                         dataLayer.push(arguments);
                         gtag('js', new Date());
-                        gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}'
-                    );
-                `}
-            </Script>
+                        gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');
+                    }`
+                }}
+            />
             <Component {...pageProps} />
         </>
     );
