@@ -51,19 +51,19 @@ As seen in [this](https://stackoverflow.com/a/7724/1434022) answer in StackOverf
 * Database naming: lower case, no spaces/dashes/underscores
 * Tables, columns, schema: UpperCamelCase, singular
 * Views: Use the prefix lower `v` followed by ViewName like `vGetAllCategories`
-* Store Procedures: Use the prefix lower 'usp` (user stored procedure) followed by Name like `uspLogError`
-* Primary key: TableName + ID such as CustomerID
-* Foreign Key: TableName + ID such as AccountID
+* Store Procedures: Use the prefix lower `usp` (user stored procedure) followed by a Name, like `uspLogError`
+* Primary key: `TableName + ID` such as CustomerID
+* Foreign Key: `TableName + ID` such as AccountID
 * Data types:
- * `nvarchar` instead of `varchar`
- * `datetime`
+  * `nvarchar` instead of `varchar`
+  * `datetime`
 * Specify `null` or `not null`
 * T-SQL:
- * End all queries with semicolon
- * Separate queries in batches using `GO`
- * Use brackets for column [Name] if they are reserved keywords or use friendlier columns like ProductName
- * If data type `nvarchar` insert values with `N` prefix like `N'Thor'`
- * Use keyword `INTO` in `INSERT INTO` even though Microsoft docs show with and without.
+  * End all queries with semicolon
+  * Separate queries in batches using `GO`
+  * Use brackets for column [Name] if they are reserved keywords or use friendlier columns like ProductName
+  * If data type `nvarchar` insert values with `N` prefix like `N'Thor'`
+  * Use keyword `INTO` in `INSERT INTO` even though Microsoft docs show with and without.
 
 ## Install Schema Visualization
 
