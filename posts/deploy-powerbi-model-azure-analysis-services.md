@@ -3,17 +3,13 @@ title: 'Deploy a Power BI Model to Azure Analysis Services'
 date: '2023-02-23'
 ---
 
-I've been thinking about the software engineering patterns of Single Responsibility, Separation of Concerns, and Don't Repeat Yourself. How to apply these patterns to a BI workflow?
+Can we apply software engineering patterns like separation of concerns, single responsibility, and not repeating yourself to BI workflows? I know a data analyst can do many functions from managing databases, connecting to data sources, creating data models, and design reporting/visualization. However, as you can see in job descriptions, they often look for a data analyst unicorn. Can one person do all these things? Probably they could, but they might not want to.
+
+Narrowing down to separating data modeling from reporting design. This separation of responsibilities can be done with Azure Analysis Services.
 
 ## Separation of Concerns
 
 Can we separate responsibilities? For instance, one person creates the data models, and another one designs the reporting and visualization? If the data modeling is done in Power BI, how do you share data modeling management with others? How do you standardize the data modeling process for management, security, and scale? Is there a way to decouple data modeling out of Power BI?
-
-## Looking for a unicorn data analyst
-
-Reading Data Analyst job descriptions, I have seen that some companies want 4 people for the price of one. From experience, I know that job descriptions are unrealistic and often the product of Telephone game, where one person whispers to another in sequence, and the output isn't the same as the input. Or often hiring managers looking for the unicorn that doesn't exist.
-
-I recently read a job description looking for a data analyst that can be an on-prem system admin, a cloud architect, a data engineer, a database administrator, a data analyst, and a business analyst.
 
 ## Deploying a data model to Azure
 
@@ -25,34 +21,17 @@ Sources:
 * [Youtube tutorial installing Visual Studio and SQL Server Analysis Services](https://www.youtube.com/watch?v=Rx_mttQoZVg)
 * [Youtube tutorial installing SQL Server Express](https://www.youtube.com/watch?v=LIytfaWH_10)
 
-In this blog post I am going to do these:
+In this blog post I am going to describe how to:
 
 1. Install Visual Studio in an Azure VM
 2. Create an Azure Analysis Services server
 3. Create a data model in Visual Studio
 4. Deploy the model to Azure Analysis Services
-5. In Power BI connect to the data model in Azure Analysis Services.
-
-## What is Azure Analysis Services
-
-A managed platform for tabular data models in the cloud. Combine data sources, define metrics, and secure data. It doesn't support multidimensional models.
-
-Based on SQL Server Analysis Services (which I never used), it supports in-memory and DirectQuery:
-
-* In-memory
-  * Data is highly-compressed and cached
-  * Fastest query response in large datasets
-  * Data model can be partitioned for parallelization and reducing memory consumption.
-  * Refresh must be programmed to update cached data from data sources
-  * Uses Azure Blob storage to persist storage and metadata
-* DirectQuery
-  * Refresh programming is not required
-  * It uses relational backend for storage and query execution
-  * Uses Azure Blob storage only to store metadata
+5. Connect to the data model in Azure Analysis Services from Power BI.
 
 ## Why use Azure Analysis Services
 
-There is a scenario where multiple users create reports using Power BI, connecting to a data source like SQL Server, and creating measures and a data model (within Power BI).
+There is a scenario where multiple users create reports using Power BI to find insights from the same data source, and create KPIs that were already previously designed by other users. Leading to repetitive tasks, basically doing the work all over again from scratch, without a proper standardization of data governance.
 
 The disadvantages of this workflow are:
 
@@ -62,13 +41,27 @@ The disadvantages of this workflow are:
 
 Why use Azure Analysis Services:
 
-* Adds a layer between the data source and Power BI
-* Move KPIs and data model out of Power BI
-  * Move general KPIs out of Power BI
-  * Users can define specific KPIs at reporting level in Power BI.
+* Adds a layer between the data source and Power BI, separating data modeling from reporting/visualization
+* Move KPIs and data model out of Power BI. Move general KPIs out of Power BI. Users can define specific KPIs at reporting level in Power BI.
 * Standardize KPIs in one shared tabular data model
 * Data security is done in the Azure Analysis server
-* Separate data modeling from reporting/visualization
+
+**What is Azure Analysis Services**
+
+A managed platform for tabular data models in the cloud. Combine data sources, define metrics, and secure data. It doesn't support multidimensional models.
+
+Based on SQL Server Analysis Services, it supports in-memory and DirectQuery:
+
+* `In-memory`
+  * Data is highly-compressed and cached
+  * Fastest query response in large datasets
+  * Data model can be partitioned for parallelization and reducing memory consumption.
+  * Refresh must be programmed to update cached data from data sources
+  * Uses Azure Blob storage to persist storage and metadata
+* `DirectQuery`
+  * Refresh programming is not required
+  * It uses relational backend for storage and query execution
+  * Uses Azure Blob storage only to store metadata
 
 ## StackOverflow Survey Dataset
 
@@ -271,10 +264,6 @@ Create other measures for these:
     SQLPercent
     CSharpPercent
 
-Divide by 100, if Power BI shows an incorrect percentage.
-
-    JavaPercent:= FORMAT( (CALCULATE(COUNTROWS(datasets), datasets[Language] = "Java") / COUNTROWS(datasets)) /100, "0.00%")
-
 **Deploy the model with the new measures**
 
 * In Visual Studio, go to the right window, `Solution Explorer`
@@ -293,7 +282,7 @@ With all my dataset transformations and new measures:
 
 ## Install BISM Normalizer
 
-As seen on the Youtube tutorial from "Azure for Everyone", they recommend to install an extension to review the changes in the model, sort of like a git diff.
+As seen on the Youtube tutorial from "Azure for Everyone", they recommend to install an extension to review the changes in the model, sort of like a `git diff` to see changes between commits.
 
 Go to `Extensions` and search for `BISM Normalizer`.
 
@@ -305,12 +294,11 @@ Making changes to measures in Visual Studio and deploying again, just takes a fe
 
 Go to Power BI and refresh.
 
-Create a matrix with columns: Gender, JavaPercent, JSPercent, PythonPercent, SQLPercent.
-
-Other transformations could have been done to generalize rows.
+Create visualizations using the defined KPI measures and other fields.
 
 ## Stop the VM and Analysis Services
 
-Shut down the Windows VM. Then go to Azure portal and stop the VM.
+Shut down the Windows VM. Then go to Azure portal:
 
-In Azure portal also go to Azure Analysis Services and pause the server.
+* Stop the VM
+* Go to Azure Analysis Services and pause the server.
