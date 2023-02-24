@@ -39,6 +39,10 @@ Under `Agent health diagnostic`, click `Rerun diagnostics`. Then got this messag
 
 Under `Operation failure diagnostic`, click `Rerun diagnostics`. Same message.
 
+## Restart the VM
+
+If nothing changes. Try restarting the VM.
+
 ## Refresh the VM
 
 Magically the `Agent status` changed to `Ready`. Tried again to connect with client using RDP and it connected to the VM.
@@ -50,3 +54,5 @@ Unknown. But possibly, once the issue appears:
 * Go to the Troubleshooting link
 * Rerun both diagnostics `Agent health` and `Operation failure`
 * Refresh the VM
+* Restart the VM
+* Refresh again

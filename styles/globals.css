@@ -49,4 +49,5 @@ code {
   overflow: auto;
   padding: 4px;
   line-height: 28px;
+  white-space: pre-wrap;
 }
