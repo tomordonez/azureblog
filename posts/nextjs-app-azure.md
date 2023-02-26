@@ -364,27 +364,29 @@ Import the file  in `pages/_app.js`:
 
 Review results in `localhost:3000/posts/first-post`
 
-**Adding Google Analytics JavaScript**
+## Add Google Analytics to Next.js app
 
 * [Adding external JS in Next.js](https://nextjs.org/docs/basic-features/script)
-* [Add Google Analytics to Next.js](https://mariestarck.com/add-google-analytics-to-your-next-js-application-in-5-easy-steps/)
-* [Another about adding GA to Next](https://enlear.academy/add-google-analytics-to-a-next-js-application-5525892844db)
 
 In Google Analytics `GA4`, in your account, create a property, create a data stream, and get the Google tag `Install manually`. Copy the JS code.
 
-Create the file `.env.local` in the root directory with this:
+**Create a local environment variable**
+
+Create the file `.env.local` in the root directory with this local environment variable:
 
     NEXT_PUBLIC_GOOGLE_ANALYTICS='G-YourCodeHere'
+
+**Add .env.local to .gitignore**
 
 Add this file to `.gitignore`. It might be already added:
 
     .env.local
 
-Go to `pages/_app.js`, import:
+**Add Google Analytics script to _app.js**
+
+Go to `pages/_app.js`. Add the Google Analytics script using the local environment variable:
 
     import Script from 'next/script';
-
-Add the Google Analytics script in the `_app.js` file:
 
     export default function App({ Component, pageProps }) {
         return (
@@ -392,9 +394,6 @@ Add the Google Analytics script in the `_app.js` file:
                 <Script
                     src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
                     strategy="afterInteractive"
-                    onLoad={() => {
-                        console.log('GA script has loaded')
-                    }}
                 />
                 <Script
                     id="google-analytics"
@@ -414,9 +413,44 @@ Add the Google Analytics script in the `_app.js` file:
         );
     }
 
-Go to the browser's console to see if the JS was loaded.
+Go to localhost to check that the script was loaded.
 
-Add the environment variable in Azure:
+**Create an environment variable in Github Actions**
+
+Since the deployment is done with GitHub and GitHub actions. Create an environment variable in GitHub. Actually, a repository variable, which is accessed with the `vars` context (see [GitHub docs](https://docs.github.com/en/actions/learn-github-actions/contexts#vars-context)). Alternatively, you could create an environment, and then an environment variable.
+
+Create a repository variable:
+
+* Go to the Next.js app repo
+* Settings
+* Security/Secrets and variables/Actions
+* Go to the `Variables` tab
+* On the green button click on `New repository variable`
+* Enter name: `NEXT_PUBLIC_GOOGLE_ANALYTICS`
+* Enter value: `G-YourCodeHere`
+
+Modify your deployment `yml` file in `.github/workflows/`:
+
+* Find the job `build_and_deploy_job`
+* At the end of this job after `with`
+
+As seen in this section:
+
+    uses: Azure/static-web-apps-deploy@v1
+    with:
+        ...
+        app_location: "/" # App source code path
+        api_location: "" # Api source code path - optional
+        output_location: "" # Built app content directory - optional
+        ###### End of Repository/Build Configurations ######
+    env:
+        NEXT_PUBLIC_GOOGLE_ANALYTICS: ${{ vars.NEXT_PUBLIC_GOOGLE_ANALYTICS }}
+
+Then deploy the app and verify online that the script was loaded.
+
+**Adding an environment variable in Azure didn't work**
+
+This didn't work for me. Before setting up the environment variable in GitHub, I did it in the Azure static web app dashboard like this:
 
 * Go to the Azure static web app
 * Settings/Configuration
@@ -425,6 +459,14 @@ Add the environment variable in Azure:
 * Click `Add`
 * Enter name: `NEXT_PUBLIC_GOOGLE_ANALYTICS`
 * Enter value: `G-YourCodeHere`
+
+I spent hours trying to troubleshoot and nothing worked, then I remembered the diagram of [What is Azure Static Web Apps](https://learn.microsoft.com/en-us/azure/static-web-apps/overview) in the Microsoft website, it said `GitHub Actions` or `Azure DevOps`.
+
+"When you create an Azure Static Web Apps resource, Azure interacts with GitHub or Azure DevOps, to monitor a branch of your choice"
+
+I am assuming that since I chose `GitHub Actions` then all deployment configuration and environment variables must be set there and not in the Azure configuration feature.
+
+## Create the blog structure of the Next.js app
 
 **Polish the Layout**
 
