@@ -22,7 +22,7 @@ export default function Home({ allPostsData }) {
       </Head>
       <section className={utilStyles.headingMd}>
         <p>
-          I am a data analyst using Python, SQL, and Power BI. Contact me on <a href="https://www.linkedin.com/in/tomordonez/">Linkedin</a>. This is a blog about Azure and Data Analytics.
+          I am a data analyst and project manager. This is a blog about Azure and Data Analytics. Python, SQL, and Power BI. <a href="https://www.linkedin.com/in/tomordonez/">Hire Me</a>
         </p>
       </section>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>

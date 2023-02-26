@@ -517,3 +517,78 @@ Around this point following the Next.js docs, I realized this was way too much J
 ## Creating blog posts
 
 I created a Markdown template and included this file in `.gitignore`. I just copy/paste the template to `posts` and modify it to create a new blog post. Then git commit and `git push -u origin main` to deploy the blog to Azure.
+
+## Add SEO to the app
+
+**Create a sitemap.xml**
+
+As seen in the docs [here](https://nextjs.org/learn/seo/crawling-and-indexing/xml-sitemaps). Create a `sitemap.xml.js` in the `pages` directory. Note the extension of the file. It's not just `.xml`. It is `.xml.js`.
+
+Modify the sample code to include this:
+
+    import { getSortedPostsData } from '../lib/posts';
+
+Change the URL to your domain so it matches `https://your-domain/posts`:
+
+    const EXTERNAL_DATA_URL = 'https://jsonplaceholder.typicode.com/posts';
+
+Remove this section and add your domain here. Instead of this:
+
+    <!--We manually set the two URLs we know already-->
+     <url>
+       <loc>https://jsonplaceholder.typicode.com</loc>
+     </url>
+     <url>
+       <loc>https://jsonplaceholder.typicode.com/guide</loc>
+     </url>
+
+Replace with:
+
+     <url>
+       <loc>https://your-domain</loc>
+     </url>
+
+Making an API call as shown in the sample, didn't work for me, as I got an error that it expected JSON but it returned HTML. I removed this section:
+
+    export async function getServerSideProps({ res }) {
+        // We make an API call to gather the URLs for our site
+        const request = await fetch(EXTERNAL_DATA_URL);
+        const posts = await request.json();
+
+Instead, I collected the blog posts from `getSortedPostsData`:
+
+    export async function getServerSideProps({ res }) {
+        const allPostsData = getSortedPostsData();
+        const sitemap = generateSiteMap(allPostsData);
+
+        res.setHeader('Content-Type', 'text/xml');
+        // we send the XML to the browser
+        res.write(sitemap);
+        res.end();
+
+        return {
+            props: {},
+        };
+    }
+
+**Create a robots.txt**
+
+As seen in the Next.js docs [here](https://nextjs.org/learn/seo/crawling-and-indexing/robots-txt). In your root directory, create a `robots.txt`
+
+    # Allow all crawlers
+    User-agent: *
+    Allow: /
+
+Also add your sitemap like this:
+
+    # Sitemap
+    Sitemap: https://your-domain/sitemap.xml
+
+**Submit Sitemap to Google Search Console**
+
+After deploying the website.
+
+* Go to `Google Search Console` or create an account
+* Add your website
+* Under Indexing/Sitemaps
+* Add a new sitemap. Enter your sitemap and Submit.

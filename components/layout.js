@@ -48,6 +48,7 @@ export default function Layout({ children, home }) {
                                 {name}
                             </Link>
                         </h2>
+                        <p><a href="https://www.linkedin.com/in/tomordonez/">Hire Me</a> for data analytics</p>
                     </>
                 )}
             </header>
