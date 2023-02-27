@@ -367,8 +367,32 @@ Review results in `localhost:3000/posts/first-post`
 ## Add Google Analytics to Next.js app
 
 * [Adding external JS in Next.js](https://nextjs.org/docs/basic-features/script)
+* [Youtube tutorial Add Google Tag Manager](https://www.youtube.com/watch?v=UuE37-MM1ws)
+* [Add Google Tag Manager to Nextjs](https://morganfeeney.com/how-to/integrate-google-tag-manager-with-next-js)
 
-In Google Analytics `GA4`, in your account, create a property, create a data stream, and get the Google tag `Install manually`. Copy the JS code.
+In Google Analytics `GA4`, in your account, create a property, and create a data stream.
+
+**The default Google Tag JS code won't work**
+
+After creating the data stream, it opens tag instructions with JS code to put after the head. I installed this in `_app.js` and the script showed correctly in localhost and then when it was deployed. However, the script wouldn't run. I checked in Google Analytics and data was being collected in the `Realtime` section.
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YOURID"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-YOURID');
+    </script>
+
+**Instead, use Google Tag Manager**
+
+* Go to Google Analytics account
+* At the top menu, go to your property dropdown
+* The second icon (a diamond) next to Google Analytics is `Tag Manager`
+* Follow the instructions to create a Tag Manager account as seen in [this](https://www.youtube.com/watch?v=UuE37-MM1ws) video from Google Analytics.
+* Copy the JS code and save for later.
 
 **Create a local environment variable**
 
@@ -382,7 +406,7 @@ Add this file to `.gitignore`. It might be already added:
 
     .env.local
 
-**Add Google Analytics script to _app.js**
+**Add Google Tag Manager code to _app.js**
 
 Go to `pages/_app.js`. Add the Google Analytics script using the local environment variable and a `strategy`.
 
@@ -393,29 +417,29 @@ If `strategy="afterInteractive"`, the script is added to the `body`. If `strateg
     export default function App({ Component, pageProps }) {
         return (
             <>
-                <Script
-                    src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
-                    strategy="beforeInteractive"
-                />
-                <Script
-                    id="google-analytics"
-                    strategy="beforeInteractive"
+                <Script id="gtm-head" strategy="beforeInteractive">
+                {`
+                    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                    })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');
+                `}
+                </Script>
+                <Script id="gtm-body" strategy="afterInteractive">
+                <noscript
                     dangerouslySetInnerHTML={{
-                        __html: `
-                        window.dataLayer = window.dataLayer || [];
-                        function gtag() {
-                            dataLayer.push(arguments);
-                            gtag('js', new Date());
-                            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');
-                        }`
+                    __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
                     }}
                 />
+                </Script>
                 <Component {...pageProps} />
             </>
         );
     }
 
-Go to localhost to check that the script was loaded.
+Go to localhost to check that the scripts were loaded to the head and the body.
 
 **Create an environment variable in Github Actions**
 
@@ -467,6 +491,14 @@ I spent hours trying to troubleshoot and nothing worked, then I remembered the d
 "When you create an Azure Static Web Apps resource, Azure interacts with GitHub or Azure DevOps, to monitor a branch of your choice"
 
 I am assuming that since I chose `GitHub Actions` then all deployment configuration and environment variables must be set there and not in the Azure configuration feature.
+
+**Verify the Google Tag Manager runs on the deployed website**
+
+* Go to your deployed website
+* Open developer tools
+* In `Elements` (HTML structure), verify that the Tag Manager scripts were loaded to the head and body
+* Go to `Network`. Check that there are two resources loaded. One starts with `gtm` and the one that confirms that Google Tag Manager is running and pinging Google Analytics starts with `collect`
+* Go to your Google Analytics, `Realtime` reporting. And you should see a user visiting your deployed website.
 
 ## Create the blog structure of the Next.js app
 
