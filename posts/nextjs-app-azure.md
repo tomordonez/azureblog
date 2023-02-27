@@ -384,7 +384,9 @@ Add this file to `.gitignore`. It might be already added:
 
 **Add Google Analytics script to _app.js**
 
-Go to `pages/_app.js`. Add the Google Analytics script using the local environment variable:
+Go to `pages/_app.js`. Add the Google Analytics script using the local environment variable and a `strategy`.
+
+If `strategy="afterInteractive"`, the script is added to the `body`. If `strategy="beforeInteractive"`, the script is added to the `head`.
 
     import Script from 'next/script';
 
@@ -393,11 +395,11 @@ Go to `pages/_app.js`. Add the Google Analytics script using the local environme
             <>
                 <Script
                     src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
-                    strategy="afterInteractive"
+                    strategy="beforeInteractive"
                 />
                 <Script
                     id="google-analytics"
-                    strategy="afterInteractive"
+                    strategy="beforeInteractive"
                     dangerouslySetInnerHTML={{
                         __html: `
                         window.dataLayer = window.dataLayer || [];

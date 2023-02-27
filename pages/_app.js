@@ -6,11 +6,11 @@ export default function App({ Component, pageProps }) {
         <>
             <Script
                 src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
-                strategy="afterInteractive"
+                strategy="beforeInteractive"
             />
             <Script
                 id="google-analytics"
-                strategy="afterInteractive"
+                strategy="beforeInteractive"
                 dangerouslySetInnerHTML={{
                     __html: `
                     window.dataLayer = window.dataLayer || [];
