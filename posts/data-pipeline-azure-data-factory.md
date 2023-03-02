@@ -24,6 +24,8 @@ After some googling, I learned that using the google query `unified certificatio
 
 I found one that had JSON data and another one that could be possibly scraped. For now I left them out of this pipeline.
 
+This is a sample of one of the files with a sea of rows:
+
 ![Data Sources and Seas of Rows](/images/data-source-sea-of-rows.png)
 
 ## Create an Azure Data factory
@@ -55,7 +57,7 @@ I decided to use these columns. The insights could be to find the number of DBE 
 I created a container named `dbeapp` with two directories:
 
 * `inputCSV`: I uploaded `12` CSV files
-* `outputJoinedCSV`: I will this after joining all files.
+* `outputJoinedCSV`: I will use this after joining all files.
 
 How to create a storage account with a container. Example in [Azure Analysis Services](deploy-powerbi-model-azure-analysis-services)
 
@@ -71,7 +73,8 @@ After the SQL Server and Database were created.
 Create a table to hold the data:
 
     CREATE TABLE Directory (
-        CompanyName nvarchar(100),
+        CompanyID int PRIMARY KEY IDENTITY(1,1),
+        CompanyName nvarchar(100) NOT NULL,
         DBAName nvarchar(100),
         Address nvarchar(100),
         City nvarchar(50),
@@ -84,7 +87,14 @@ Create a table to hold the data:
         County nvarchar(50)
     )
 
-However, much later in the process, I had problems with the data pipeline, and to change the column lengths. More about this later.
+However, much later in the process, I had problems with the data pipeline, and had to change the column lengths. More about this later.
+
+In another blog post, I am going to build a star schema from this database since:
+
+* `Directory` is not the best name for this table, change to `Company`
+* Extract address information into a `CompanyAddress` table (since a company can have many address values)
+* I think `Agency` and `CertificationType` might have a few dozen unique values and they can be in separate tables
+* The database can have a fact table to make PowerBI easier to query than creating DAX calculations
 
 Open the `Tables` to verify that the query ran correctly. I can see the columns in `dbo.Directory`
 
@@ -239,6 +249,8 @@ This is what the final Data Flow looks like, all the way zoomed out:
 * I set my rows to `100`. The default is `1000`
   * This setting is changed to the default every time you stop/start a Debug instance.
 
+Final result of the Data Flow, zoomed in:
+
 ![Azure Data Factory Data flow Zoom in](/images/azure-data-factory-data-flow-zoom1.png)
 
 **Create a Source**
@@ -259,8 +271,9 @@ This is what the final Data Flow looks like, all the way zoomed out:
   * Select `First row as header`
 * `Save all` to commit to the repository
 
-Enable `Data flow debug`:
+**Debug what you have so far**
 
+* Enable `Data flow debug`
 * Change `Debug settings` with a row limit of `100`
 * In `Source Settings` tab
   * In `Linked Service` click on `Test connection`
@@ -268,6 +281,8 @@ Enable `Data flow debug`:
   * Click `Refresh`
   * If you get the error `The gateway did not receive a response from 'Microsoft.DataFactory'`
     * Disable Debug and Enable again
+
+Final result of the Data Flow, a closer look:
 
 ![Azure Data Factory Data Flow Zoom more](/images/azure-data-factory-data-flow-zoom2.png)
 
@@ -277,7 +292,7 @@ I want these columns:
 
     CompanyName, DBAName, Address, City, State, Zip, Website, Agency, CertificationType, Capability, County
 
-On the `Source` card
+On the `Source` card (In my example `TexasCSV`)
 
 * Go the `Data preview` tab
 * Click `Map drifted`
@@ -300,7 +315,7 @@ On the `Select` card
 
 **Add Output to a Sink**
 
-On the `RenameColumns` (select) card:
+On the `RenameColumns` (Select card):
 
 * Click on the plus `+` icon
 * Select `Destination` then `Sink`
@@ -371,7 +386,7 @@ What I realized from my CSV files was that those that used the same platform (th
 
 **Results of joining DBE files**
 
-* About `36,000` rows
+* About `36,000` rows (companies)
 * Size `6MB`
 
 ## 5. Create an input Dataset for PowerQuery processing
@@ -415,10 +430,15 @@ Later when you try to move the dataset from Data Studio to SQL Server. It might 
 * Rename it, for example `CleanCSV`
 * Select a dataset, `InputPowerQueryCSV`
 * PowerQuery opens as an iframe
-  * Many columns had white space. I transformed all the columns to `Trim` them
-  * Another column had too many characters and I decided to truncate it to `250` characters
-    * Formula `Text.Start([Capability], 250)`
-  * I also removed duplicates by `CompanyName + Address` and by `Address + City + State`
+* `Save all` to commit to the repository
+
+**Process the data with PowerQuery**
+
+* Many columns had white space. I transformed all the columns to `Trim` them
+* Another column had too many characters and I decided to truncate it to `250` characters
+  * Formula `Text.Start([Capability], 250)`
+* I also removed duplicates by `CompanyName + Address + CertificationType`
+  * There were repeated rows but had different `CertificationType`
 * `Save all` to commit to the repository
 
 **Correct the Table in SQL Server**
@@ -429,7 +449,8 @@ Go to the SQL Server Table, then Query Editor. Recreated the table to map the ma
     GO
 
     CREATE TABLE Directory (
-        CompanyName nvarchar(150),
+        CompanyID int PRIMARY KEY IDENTITY(1,1),
+        CompanyName nvarchar(100) NOT NULL,
         DBAName nvarchar(150),
         [Address] nvarchar(150),
         City nvarchar(50),
@@ -443,7 +464,7 @@ Go to the SQL Server Table, then Query Editor. Recreated the table to map the ma
     );
     GO
 
-**Create a dataset for clean PowerQuery result**
+**Create a dataset for the PowerQuery result**
 
 * In Data Factory, Author interface, click on Datasets
 * Create new dataset, Azure Blob Storage, DelimitedText
