@@ -5,7 +5,9 @@ date: '2023-02-26'
 
 Building a pipeline with Azure Data Factory.
 
-ETL process:
+![Azure Data Factory Pipeline](/images/azure-data-factory-pipeline.png)
+
+**ETL process**
 
 * Collect data sources
 * Clean/join them with Dataflow and PowerQuery
@@ -350,7 +352,7 @@ What I realized from my CSV files was that those that used the same platform (th
 * About `36,000` rows
 * Size `6MB`
 
-## 5. Create a Dataset with the Dataflow joined CSV files for PowerQuery processing
+## 5. Create a input Dataset for PowerQuery processing
 
 * Go back to the Author/Edit interface
 * Under `Datasets` click on `Add Dataset`
