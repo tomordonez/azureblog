@@ -24,6 +24,8 @@ After some googling, I learned that using the google query `unified certificatio
 
 I found one that had JSON data and another one that could be possibly scraped. For now I left them out of this pipeline.
 
+![Data Sources and Seas of Rows](/images/data-source-sea-of-rows.png)
+
 ## Create an Azure Data factory
 
 * In the Azure portal
@@ -86,6 +88,8 @@ However, much later in the process, I had problems with the data pipeline, and t
 
 Open the `Tables` to verify that the query ran correctly. I can see the columns in `dbo.Directory`
 
+![Database in SQL Server](/images/sql-server-database.png)
+
 ## Data Factory Workflow
 
 We have to process the CSV files before combining them, since some files have different column names and number of columns.
@@ -121,6 +125,8 @@ More about Data Factory Source Control in the Microsoft docs [here](https://lear
 
 * Go to GitHub and create a repo.
 * Set to private. Initialize with a Readme
+
+![Azure Data Factory Git Repository](/images/azure-data-factory-git-repository.png)
 
 **Add the GitHub repo to Data Factory**
 
@@ -158,6 +164,8 @@ In Data Factory, top left, a `main branch` will show up.
 * Name: `Blob CSV to SQL`
 * `Save all` to commit to the repository
 
+![Azure Data Factory Pipeline](/images/azure-data-factory-pipeline-resource.png)
+
 ## 2. Create a Linked Service for the Blob container
 
 In Data Factory:
@@ -172,6 +180,8 @@ In Data Factory:
 * At the bottom click on `Test connection`
 * Click `Create`
 * `Save all` to commit to the repository
+
+![Azure Data Factory Linked Services InputBlob](/images/azure-data-factory-linked-services-inputblob.png)
 
 ## 3. Create a Dataset to join the output of the Data Flow
 
@@ -189,6 +199,8 @@ We need to transform the CSV files from the Azure Blob, clean the data, and join
 * A new dataset is created
 * `Save all` to commit to the repository
 
+![Azure Data Factory Datasets](/images/azure-data-factory-datasets.png)
+
 ## 4. Create a Data Flow to process each CSV file
 
 There are two transformation features in Azure Data Factory. Which one to use depends on the data source.
@@ -197,6 +209,10 @@ There are two transformation features in Azure Data Factory. Which one to use de
 * Data Flow: It can use a dataset in Data Factory or a CSV file from Azure Blob
 
 Since all the files are CSVs in the Azure Blob container. We are using Data Flow.
+
+This is what the final Data Flow looks like, all the way zoomed out:
+
+![Azure Data Factory Data Flow Zoomed Out](/images/azure-data-factory-dataflow.png)
 
 **Create a Data Flow**
 
@@ -222,6 +238,8 @@ Since all the files are CSVs in the Azure Blob container. We are using Data Flow
 * You can change the number of rows to preview.
 * I set my rows to `100`. The default is `1000`
   * This setting is changed to the default every time you stop/start a Debug instance.
+
+![Azure Data Factory Data flow Zoom in](/images/azure-data-factory-data-flow-zoom1.png)
 
 **Create a Source**
 
@@ -250,6 +268,8 @@ Enable `Data flow debug`:
   * Click `Refresh`
   * If you get the error `The gateway did not receive a response from 'Microsoft.DataFactory'`
     * Disable Debug and Enable again
+
+![Azure Data Factory Data Flow Zoom more](/images/azure-data-factory-data-flow-zoom2.png)
 
 **Data Transformation: RenameColumns**
 
@@ -295,6 +315,8 @@ On the `RenameColumns` (select) card:
     * In `Output to single file` enter a name like `dbe-joined.csv`
     * Select the box `Clear the folder` (keep in mind this will delete contents of the output container)
 * `Save all` to commit to the repository
+
+![Azure Data Factory Data Flow Union](/images/azure-data-factory-data-flow-union.png)
 
 **Using Union or Join**
 
@@ -352,7 +374,7 @@ What I realized from my CSV files was that those that used the same platform (th
 * About `36,000` rows
 * Size `6MB`
 
-## 5. Create a input Dataset for PowerQuery processing
+## 5. Create an input Dataset for PowerQuery processing
 
 * Go back to the Author/Edit interface
 * Under `Datasets` click on `Add Dataset`
@@ -383,6 +405,8 @@ Later when you try to move the dataset from Data Studio to SQL Server. It might 
 
 * We could modify the dataset to match the data type lengths and/or
 * Clean the dataset and modify the data type lengths in SQL Server
+
+![Azure Data Factory Power Query](/images/azure-data-factory-power-query.png)
 
 **Create a PowerQuery resource**
 
@@ -534,6 +558,8 @@ When done debugging, turn it off, or they will keep charging you. `Save all` to 
 * Query editor
 * Run a query `SELECT COUNT(*) FROM your-database-name`
 * Verify the results
+
+![Azure Data Factory SQL Server](/images/azure-data-factory-sql-server.png)
 
 **Run again using a Trigger**
 
