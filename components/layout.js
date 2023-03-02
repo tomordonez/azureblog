@@ -5,7 +5,7 @@ import utilStyles from '../styles/utils.module.css';
 import Link from 'next/link';
 
 const name = 'Tom Ordonez';
-export const siteTitle = 'Learning Azure - Tom Ordonez';
+export const siteTitle = 'Working with Azure - Tom Ordonez';
 
 export default function Layout({ children, home }) {
     return (
@@ -14,7 +14,7 @@ export default function Layout({ children, home }) {
                 <link rel="icon" href="/images/favicon.ico" />
                 <meta
                     name="description"
-                    content="Learning Azure and Data Analytics"
+                    content="Working with Azure and Data Analytics"
                 />
                 <meta name="og:title" content={siteTitle} />
             </Head>
@@ -27,7 +27,7 @@ export default function Layout({ children, home }) {
                             className={utilStyles.borderCircle}
                             height={144}
                             width={144}
-                            alt="Learning Azure with Tom Ordonez"
+                            alt="Working with Azure - Tom Ordonez"
                         />
                         <h1 className={utilStyles.heading2Xl}>{name}</h1>
                     </>
@@ -40,7 +40,7 @@ export default function Layout({ children, home }) {
                                 className={utilStyles.borderCircle}
                                 height={108}
                                 width={108}
-                                alt="Learning Azure with Tom Ordonez"
+                                alt="Working with Azure - Tom Ordonez"
                             />
                         </Link>
                         <h2 className={utilStyles.headingLg}>

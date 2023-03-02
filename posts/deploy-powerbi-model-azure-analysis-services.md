@@ -98,6 +98,10 @@ Since we are using the `CSV` file from the Stackoverflow dataset. We have to upl
 * Enter a name and OK
 * Upload the CSV dataset `survey_results_public.csv` to this container
 
+More about containers:
+* You cannot rename a container. You would have to create a new container and move the data from one to the other
+* You cannot directly add a folder inside a container. But you can enter a folder name while uploading the files.
+
 **Preview the CSV file from the container**
 
 * This file is too big to be previewed from the container. You get this error:
