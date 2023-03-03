@@ -589,3 +589,7 @@ So far the pipeline ran in debugging mode. Create a trigger to keep a record of 
 * Go to the Data Factory
 * `Add trigger`, then `Trigger Now`.
 * It will monitor this run in the Monitor interface.
+
+**Publish**
+
+Click `Publish` to save everything into the `adf_publish` branch. An internal branch used by Azure Data Factory.
