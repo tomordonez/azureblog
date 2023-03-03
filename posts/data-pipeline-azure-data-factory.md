@@ -109,10 +109,10 @@ We have to process the CSV files before combining them, since some files have di
 2. Create a `Linked Service` for the Blob container
 3. Create a `Dataset` to join the output of the Data Flow
 4. Create a `Data Flow` to process each CSV file
-5. Create a `Dataset` with the joined CSV files
+5. Create a `Dataset` for PowerQuery processing
 6. Create a `Linked Service` for SQL Server
 7. Create a `Dataset` for SQL Server
-8. Create a `Copy Activity` from the joined Dataset to the SQL Server Dataset
+8. Create a `Copy Activity` from the PowerQuery output to SQL Server
 9. Verify in `SQL Server` that the data was copied
 
 There is a Youtube tutorial about some of the above workflow [here](https://www.youtube.com/watch?v=EpDkxTHAhOs)
@@ -526,7 +526,7 @@ Go to the SQL Server Table, then Query Editor. Recreated the table to map the ma
 * Import schema, leave default `From connection/store`
 * `Save all` to commit to the repository
 
-## 8. Create the Copy Activity from Input Blob to SQL Server
+## 8. Create a Copy Activity from PowerQuery output to SQL Server
 
 * Go to the Author/Edit interface
 * Go to the Pipeline
