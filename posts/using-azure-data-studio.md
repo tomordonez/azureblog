@@ -64,7 +64,7 @@ As seen in [this](https://stackoverflow.com/a/7724/1434022) answer in StackOverf
   * If data type `nvarchar` insert values with `N` prefix like `N'Thor'`
   * Use keyword `INTO` in `INSERT INTO` even though Microsoft docs show with and without.
 
-## Install Schema Visualization
+## Generate ER diagram in Azure Data Studio
 
 In `Extensions` search for `Schema Visualization`. Follow the steps to install.
 
