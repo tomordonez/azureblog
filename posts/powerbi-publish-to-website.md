@@ -54,9 +54,9 @@ If the code generation works, the next screen should look like this:
 
 You can share the link that was generated and the link will open without having to login to Power BI.
 
-You can also embed the `iframe` code in a web page.
+You can also embed the `iframe` code in a web page...
 
-<iframe title="Report Section" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiMTFjZTdmY2UtODZiZS00MGI1LTgzNTctNTdlYmNhYzkxY2NhIiwidCI6ImFlYWFhOWZmLTM2ZmYtNDJjOC1hYjE5LTI0OTgzMzUxYTY0MCJ9" frameborder="0" allowFullScreen="true"></iframe>
+<iframe title="Report Section" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiZWY5YTI5ZjktMWIzMy00MTVmLWJkYjktYjY1YTAwZTc5ZTQ5IiwidCI6ImFlYWFhOWZmLTM2ZmYtNDJjOC1hYjE5LTI0OTgzMzUxYTY0MCJ9&pageName=ReportSection" frameborder="0" allowFullScreen="true"></iframe>
 
 ## Cannot find the embed codes
 
